@@ -2,6 +2,14 @@
 import { Moon, Sun } from 'lucide-preact';
 import BrandIcon from './BrandIcon.astro';
 import { site } from '../site';
+
+const sections = [
+  { id: 'playground', label: 'playground' },
+  { id: 'about', label: 'about' },
+  { id: 'open-source', label: 'open source' },
+  { id: 'career', label: 'career' },
+  { id: 'work', label: 'work with me' },
+];
 ---
 
 <header class="site-header">
@@ -9,11 +17,8 @@ import { site } from '../site';
     <a href="#top" class="wordmark" aria-label="vinirib, back to top">
       <span class="wordmark-dot" aria-hidden="true"></span>vinirib
     </a>
-    <nav aria-label="Sections">
-      <a href="#playground">playground</a>
-      <a href="#about">about</a>
-      <a href="#career">career</a>
-      <a href="#work">work with me</a>
+    <nav class="nav" aria-label="Sections">
+      {sections.map((s) => <a href={`#${s.id}`} data-section={s.id}>{s.label}</a>)}
     </nav>
     <div class="header-tools">
       <span class="load-badge" id="load-badge" hidden>LOAD: 11</span>
@@ -27,6 +32,9 @@ import { site } from '../site';
       </button>
     </div>
   </div>
+  <nav class="subnav" aria-label="Sections">
+    {sections.map((s) => <a href={`#${s.id}`} data-section={s.id}>{s.label}</a>)}
+  </nav>
 </header>
 
 <script>
@@ -40,6 +48,20 @@ import { site } from '../site';
     } catch {}
   });
 
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-section]');
+  const spy = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        links.forEach((a) => a.toggleAttribute('aria-current', a.dataset.section === entry.target.id));
+        const chip = document.querySelector<HTMLAnchorElement>(`.subnav [data-section="${entry.target.id}"]`);
+        if (chip?.offsetParent) chip.parentElement?.scrollTo({ left: chip.offsetLeft - 24, behavior: 'smooth' });
+      }
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  document.querySelectorAll('main section[id]').forEach((section) => spy.observe(section));
+
   const badge = document.getElementById('load-badge');
   window.addEventListener('system:load', (event) => {
     const level = (event as CustomEvent<{ level: number }>).detail.level;
@@ -52,14 +74,13 @@ import { site } from '../site';
     position: sticky;
     top: 0;
     z-index: 20;
-    height: 56px;
     border-bottom: 1px solid var(--border);
     background: color-mix(in srgb, var(--bg) 82%, transparent);
     backdrop-filter: blur(10px);
   }
 
   .header-inner {
-    height: 100%;
+    height: 56px;
     display: flex;
     align-items: center;
     gap: 24px;
@@ -84,20 +105,53 @@ import { site } from '../site';
     background: var(--accent);
   }
 
-  nav {
+  .nav {
     display: flex;
-    gap: 20px;
+    gap: 4px;
     margin-left: auto;
   }
 
-  nav a {
+  .nav a,
+  .subnav a {
+    position: relative;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
     font: 500 14px/1 var(--font-mono);
     color: var(--text-muted);
+    white-space: nowrap;
+    transition: color 150ms var(--ease), background-color 150ms var(--ease);
   }
 
-  nav a:hover {
+  .nav a:hover,
+  .subnav a:hover {
     color: var(--text);
+    background: var(--surface-2);
     text-decoration: none;
+  }
+
+  .nav a[aria-current],
+  .subnav a[aria-current] {
+    color: var(--text);
+  }
+
+  .nav a[aria-current]::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: -11px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-text);
+  }
+
+  .subnav {
+    display: none;
+  }
+
+  .subnav a[aria-current] {
+    background: var(--surface-2);
+    box-shadow: inset 0 0 0 1px var(--border-strong);
   }
 
   .header-tools {
@@ -151,13 +205,25 @@ import { site } from '../site';
     display: none;
   }
 
-  @media (max-width: 640px) {
-    nav {
+  @media (max-width: 1000px) {
+    .nav {
       display: none;
     }
 
     .header-tools {
       margin-left: auto;
+    }
+
+    .subnav {
+      display: flex;
+      gap: 6px;
+      padding: 0 24px 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .subnav::-webkit-scrollbar {
+      display: none;
     }
   }
 </style>
