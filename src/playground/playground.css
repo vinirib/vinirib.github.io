@@ -1,4 +1,5 @@
 .pg {
+  container: pg / inline-size;
   position: relative;
   display: grid;
   gap: 16px;
@@ -20,12 +21,36 @@
   overflow: visible;
 }
 
-.pg-wide {
-  aspect-ratio: 16 / 8;
+.pg-canvas {
+  min-height: 440px;
+  height: 100%;
 }
 
-.pg-tall {
-  aspect-ratio: 4 / 5;
+.pg-edges-tall {
+  display: none;
+}
+
+@container pg (max-width: 639px) {
+  .pg-canvas {
+    min-height: 540px;
+  }
+
+  .legend {
+    right: 12px;
+  }
+
+  .pg-edges-wide {
+    display: none;
+  }
+
+  .pg-edges-tall {
+    display: block;
+  }
+
+  .node-wrap {
+    left: var(--xt) !important;
+    top: var(--yt) !important;
+  }
 }
 
 .pg-edges,
@@ -55,6 +80,8 @@
 
 .node-wrap {
   position: absolute;
+  left: var(--xw);
+  top: var(--yw);
   transform: translate(-50%, -50%);
   z-index: 2;
 }
@@ -763,13 +790,12 @@ input[type='range'] {
 }
 
 @media (max-width: 640px) {
-  .legend {
-    position: static;
-    padding: 0 12px 12px;
-  }
 
-  .pg-tall {
-    aspect-ratio: auto;
-    min-height: 460px;
+}
+
+@media (max-width: 640px) {
+  .strip-head {
+    flex-direction: column;
+    gap: 4px;
   }
 }

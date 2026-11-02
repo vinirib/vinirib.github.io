@@ -17,8 +17,8 @@ const stack = ['Go', 'Java', 'Kotlin', 'Python', 'TypeScript'];
       </p>
       <h1>I build backend systems that keep working when things break.</h1>
       <p class="sub">
-        {site.title} in São Paulo, working remote with teams across the globe. Distributed systems, APIs and
-        AI-assisted engineering.
+        {site.title} and open source contributor, in São Paulo and working remote with teams across the globe.
+        Distributed systems, APIs and AI-assisted engineering.
       </p>
       <ul class="stack" aria-label="Languages I work with">
         {stack.map((item) => <li class="chip">{item}</li>)}
@@ -34,19 +34,27 @@ const stack = ['Go', 'Java', 'Kotlin', 'Python', 'TypeScript'];
         <li><a href={mailto()}><Mail size={16} strokeWidth={1.5} /> {site.email}</a></li>
       </ul>
     </div>
-    <div class="hero-avatar">
-      <Picture
-        src={avatar}
-        alt="Vinícius Ribeiro in a black t-shirt, smiling, in an office with an architecture diagram on a whiteboard"
-        widths={[400, 600]}
-        sizes="200px"
-        quality={90}
-        formats={['avif', 'webp']}
-        fallbackFormat="jpg"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
+    <aside class="hero-card" aria-label="Profile">
+      <div class="hero-avatar">
+        <Picture
+          src={avatar}
+          alt="Vinícius Ribeiro in a black t-shirt, smiling, in an office with an architecture diagram on a whiteboard"
+          widths={[560, 840]}
+          sizes="280px"
+          quality={90}
+          formats={['avif', 'webp']}
+          fallbackFormat="jpg"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <dl class="card-meta">
+        <div><dt>name</dt><dd>{site.name}</dd></div>
+        <div><dt>based in</dt><dd>São Paulo, remote</dd></div>
+        <div><dt>open source</dt><dd><a href="#open-source">pact-jvm, swagger, quarkus</a></dd></div>
+        <div><dt>status</dt><dd class="ok">open to contracts</dd></div>
+      </dl>
+    </aside>
   </div>
 </section>
 
@@ -78,7 +86,7 @@ const stack = ['Go', 'Java', 'Kotlin', 'Python', 'TypeScript'];
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 48px;
-    align-items: start;
+    align-items: center;
     width: 100%;
   }
 
@@ -121,8 +129,9 @@ const stack = ['Go', 'Java', 'Kotlin', 'Python', 'TypeScript'];
   }
 
   h1 {
-    font-size: clamp(32px, 4.6vw, 48px);
-    max-width: 18ch;
+    font-size: clamp(32px, 4.4vw, 46px);
+    max-width: 24ch;
+    text-wrap: pretty;
   }
 
   .sub {
@@ -177,18 +186,47 @@ const stack = ['Go', 'Java', 'Kotlin', 'Python', 'TypeScript'];
     text-decoration: none;
   }
 
-  .hero-avatar :global(img) {
-    display: block;
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 18px;
-    border: 1px solid var(--border-strong);
-    transition: border-color 200ms var(--ease);
+  .hero-card {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
   }
 
-  .hero-avatar :global(img):hover {
-    border-color: var(--accent-text);
+  .hero-avatar :global(img) {
+    display: block;
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+
+  .card-meta {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 14px 8px 6px;
+    font: 500 12px/1.4 var(--font-mono);
+  }
+
+  .card-meta div {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 8px;
+  }
+
+  .card-meta dt {
+    color: var(--text-subtle);
+  }
+
+  .card-meta dd {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .card-meta .ok {
+    color: var(--success);
   }
 
   @media (max-width: 760px) {
@@ -202,15 +240,29 @@ const stack = ['Go', 'Java', 'Kotlin', 'Python', 'TypeScript'];
       gap: 0;
     }
 
-    .hero-avatar {
-      order: -1;
-      margin-bottom: 24px;
+    .hero-card {
+      order: 2;
+      width: 100%;
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      align-items: center;
+      gap: 4px;
     }
 
     .hero-avatar :global(img) {
-      width: 96px;
-      height: 96px;
-      border-radius: 14px;
+      width: 112px;
+      height: 112px;
+      border-radius: 12px;
+    }
+
+    .card-meta {
+      padding: 4px 6px;
+    }
+
+    .card-meta div {
+      grid-template-columns: 1fr;
+      gap: 0;
     }
 
     .sub {

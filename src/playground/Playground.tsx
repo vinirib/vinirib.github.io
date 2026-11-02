@@ -27,7 +27,7 @@ type Layout = 'wide' | 'tall';
 
 const POSITIONS: Record<Layout, Record<NodeId, Pos>> = {
   wide: { client: { x: 8, y: 50 }, gateway: { x: 31, y: 50 }, payA: { x: 57, y: 22 }, payB: { x: 57, y: 78 }, db: { x: 86, y: 50 } },
-  tall: { client: { x: 50, y: 9 }, gateway: { x: 50, y: 33 }, payA: { x: 24, y: 61 }, payB: { x: 76, y: 61 }, db: { x: 50, y: 89 } },
+  tall: { client: { x: 50, y: 9 }, gateway: { x: 50, y: 30 }, payA: { x: 24, y: 53 }, payB: { x: 76, y: 53 }, db: { x: 50, y: 76 } },
 };
 
 const EDGES: Array<[NodeId, NodeId]> = [
@@ -319,6 +319,31 @@ export default function Playground() {
     setMenu(null);
   };
 
+  const [chaos, setChaos] = useState(false);
+
+  useEffect(() => {
+    const breakable: NodeId[] = ['gateway', 'payA', 'payB', 'db'];
+    const killRandom = () => {
+      const alive = breakable.filter((id) => world.current.health[id] === 'up');
+      if (alive.length === 0) {
+        for (const id of breakable) world.current.health[id] = 'up';
+      } else {
+        world.current.health[alive[Math.floor(rng.current() * alive.length)]] = 'down';
+      }
+      setHealth({ ...world.current.health });
+    };
+    const onChaos = (event: Event) => setChaos((event as CustomEvent<{ on: boolean }>).detail.on);
+    window.addEventListener('playground:kill-random', killRandom);
+    window.addEventListener('playground:chaos', onChaos);
+    let timer: ReturnType<typeof setInterval> | undefined;
+    if (chaos) timer = setInterval(killRandom, 5000);
+    return () => {
+      window.removeEventListener('playground:kill-random', killRandom);
+      window.removeEventListener('playground:chaos', onChaos);
+      if (timer) clearInterval(timer);
+    };
+  }, [chaos]);
+
   const applyScenario = (name: string) => {
     setScenario(name);
     const preset = SCENARIOS[name].health;
@@ -356,23 +381,26 @@ export default function Playground() {
   return (
     <div class="pg" ref={root}>
       <div class="pg-main">
-        <div class={`pg-canvas pg-${layout}`} role="group" aria-label="Payment system topology. Select a node to break it.">
-          <svg class="pg-edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            {EDGES.map(([from, to]) => {
-              const broken = health[from] === 'down' || health[to] === 'down';
-              return (
-                <line
-                  key={`${from}-${to}`}
-                  x1={positions[from].x}
-                  y1={positions[from].y}
-                  x2={positions[to].x}
-                  y2={positions[to].y}
-                  class={broken ? 'edge edge-broken' : 'edge'}
-                  vector-effect="non-scaling-stroke"
-                />
-              );
-            })}
-          </svg>
+        <div class="pg-canvas" role="group" aria-label="Payment system topology. Select a node to break it.">
+          {(['wide', 'tall'] as Layout[]).map((variant) => (
+            <svg class={`pg-edges pg-edges-${variant}`} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" key={variant}>
+              {EDGES.map(([from, to]) => {
+                const broken = health[from] === 'down' || health[to] === 'down';
+                const p = POSITIONS[variant];
+                return (
+                  <line
+                    key={`${from}-${to}`}
+                    x1={p[from].x}
+                    y1={p[from].y}
+                    x2={p[to].x}
+                    y2={p[to].y}
+                    class={broken ? 'edge edge-broken' : 'edge'}
+                    vector-effect="non-scaling-stroke"
+                  />
+                );
+              })}
+            </svg>
+          ))}
           <div class="pg-layer" ref={layer} aria-hidden="true" />
           <ul class="legend" aria-label="Legend">
             <li><span class="lg lg-request" />request</li>
@@ -383,7 +411,16 @@ export default function Playground() {
             <li><span class="lg-text lg-fail">✕</span>failed</li>
           </ul>
           {NODES.map(({ id, label, Icon }) => (
-            <div class="node-wrap" style={{ left: `${positions[id].x}%`, top: `${positions[id].y}%` }} key={id}>
+            <div
+              class="node-wrap"
+              style={{
+                '--xw': `${POSITIONS.wide[id].x}%`,
+                '--yw': `${POSITIONS.wide[id].y}%`,
+                '--xt': `${POSITIONS.tall[id].x}%`,
+                '--yt': `${POSITIONS.tall[id].y}%`,
+              }}
+              key={id}
+            >
               <button
                 type="button"
                 class={`node node-${health[id]}`}

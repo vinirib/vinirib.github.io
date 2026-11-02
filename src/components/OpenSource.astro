@@ -1,8 +1,14 @@
 ---
 import { GitMerge } from 'lucide-preact';
 import projects from '../data/oss-projects.json';
+import { fetchMergedPrs, fetchOssProjects } from '../lib-prs';
 
-const entries = Object.entries(projects as Record<string, { what: string; doing: string }>);
+const { items: prs } = await fetchMergedPrs('vinirib');
+const ago = (iso: string) => {
+  const days = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 86400000));
+  return days === 0 ? 'today' : days === 1 ? 'yesterday' : days < 30 ? `${days} days ago` : `${Math.round(days / 30)} mo ago`;
+};
+const entries = Object.entries(await fetchOssProjects(projects));
 ---
 
 <section class="section" id="open-source" aria-labelledby="oss-title">
@@ -25,6 +31,22 @@ const entries = Object.entries(projects as Record<string, { what: string; doing:
         </li>
       ))}
     </ul>
+    {prs.length > 0 && (
+      <div class="merged">
+        <p class="eyebrow">Recently merged</p>
+        <ul>
+          {prs.map((pr) => (
+            <li>
+              <a href={pr.url} target="_blank" rel="noopener">
+                <span class="merged-repo">{pr.repo}</span>
+                <span class="merged-title">{pr.title}</span>
+                <span class="merged-when">{pr.mergedAt ? ago(pr.mergedAt) : ''}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </div>
 </section>
 
@@ -83,6 +105,55 @@ const entries = Object.entries(projects as Record<string, { what: string; doing:
   .oss-doing {
     font-size: 14px;
     line-height: 1.5;
+  }
+
+  .merged {
+    margin-top: 32px;
+  }
+
+  .merged ul {
+    display: grid;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .merged a {
+    display: grid;
+    grid-template-columns: 220px 1fr auto;
+    gap: 16px;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .merged a:hover {
+    background: var(--surface);
+    text-decoration: none;
+  }
+
+  .merged-repo,
+  .merged-when {
+    font: 500 13px/1.6 var(--font-mono);
+    color: var(--text-subtle);
+  }
+
+  .merged-repo::before {
+    content: '⑂ ';
+    color: var(--success);
+  }
+
+  @media (max-width: 700px) {
+    .merged a {
+      grid-template-columns: 1fr auto;
+    }
+
+    .merged-title {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
   }
 
   @media (max-width: 900px) {

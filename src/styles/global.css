@@ -13,7 +13,7 @@
   --border-strong: #2f3546;
   --text: #e6e8ee;
   --text-muted: #9aa3b2;
-  --text-subtle: #6b7385;
+  --text-subtle: #808a9d;
   --accent: #4f46e5;
   --accent-hover: #6366f1;
   --accent-text: #a5b4fc;
@@ -45,6 +45,13 @@
   --warning: #b45309;
   --error: #b91c1c;
   --grid: rgb(0 0 0 / 0.04);
+}
+
+/* easter egg: declared incident */
+:root[data-mode='incident'] {
+  --accent: #dc2626;
+  --accent-hover: #ef4444;
+  --accent-text: #fca5a5;
 }
 
 /* load goes to eleven: amp style */
@@ -90,6 +97,7 @@ body {
 h1,
 h2,
 h3 {
+  text-wrap: balance;
   font-family: var(--font-mono);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -216,5 +224,19 @@ a:hover {
 
   .section h2 {
     font-size: 24px;
+  }
+}
+
+@media (pointer: coarse) {
+  .btn,
+  select,
+  .seg,
+  .stepper button,
+  .node-menu button {
+    min-height: 44px;
+  }
+
+  .stepper button {
+    width: 44px;
   }
 }

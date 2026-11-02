@@ -1,9 +1,14 @@
 ---
+import { fetchMergedPrs } from '../lib-prs';
+
+const { total: mergedOss } = await fetchMergedPrs('vinirib', 1);
 const stats = [
   { value: '10+', label: 'years shipping backend in production' },
   { value: '12+', label: 'US banking cores integrated' },
   { value: '~20', label: 'teams moved to contract testing' },
-  { value: '10+', label: 'PR reviews a day with AI in the loop' },
+  mergedOss > 0
+    ? { value: String(mergedOss), label: 'pull requests merged in open source projects' }
+    : { value: '10+', label: 'PR reviews a day with AI in the loop' },
 ];
 
 const pillars = [

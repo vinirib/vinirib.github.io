@@ -17,6 +17,8 @@ import { site } from '../site';
     </nav>
     <div class="header-tools">
       <span class="load-badge" id="load-badge" hidden>LOAD: 11</span>
+      <button class="icon-btn kbd-btn" type="button" data-action="open-palette" aria-label="Open command palette (Cmd+K)">⌘K</button>
+      <button class="icon-btn kbd-btn" type="button" data-action="open-terminal" aria-label="Open terminal (backtick key)">&gt;_</button>
       <a class="icon-btn" href={site.linkedin} target="_blank" rel="me noopener" aria-label="LinkedIn profile"><BrandIcon name="linkedin" /></a>
       <a class="icon-btn" href={site.github} target="_blank" rel="me noopener" aria-label="GitHub profile"><BrandIcon name="github" /></a>
       <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle light and dark theme">
@@ -129,6 +131,12 @@ import { site } from '../site';
   .icon-btn:hover {
     color: var(--text);
     border-color: var(--border-strong);
+  }
+
+  .kbd-btn {
+    width: auto;
+    padding: 0 10px;
+    font: 600 12px/1 var(--font-mono);
   }
 
   .theme-icon-light {
