@@ -1,0 +1,99 @@
+---
+import { GitMerge } from 'lucide-preact';
+import projects from '../data/oss-projects.json';
+
+const entries = Object.entries(projects as Record<string, { what: string; doing: string }>);
+---
+
+<section class="section" id="open-source" aria-labelledby="oss-title">
+  <div class="container">
+    <p class="eyebrow">03 / Open source</p>
+    <h2 id="oss-title">I fix the libraries I use</h2>
+    <p class="lead">Pull requests to the tools other teams depend on: contract testing, OpenAPI, Java frameworks and AI agents.</p>
+    <ul class="oss">
+      {entries.map(([repo, p]) => (
+        <li>
+          <a href={`https://github.com/${repo}/pulls?q=author%3Avinirib`} target="_blank" rel="noopener">
+            <span class="oss-head">
+              <GitMerge size={16} strokeWidth={1.5} />
+              <strong>{repo.split('/')[1]}</strong>
+              <span class="oss-owner">{repo.split('/')[0]}</span>
+            </span>
+            <span class="oss-what">{p.what}</span>
+            <span class="oss-doing">{p.doing}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .oss {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .oss a {
+    display: grid;
+    gap: 8px;
+    height: 100%;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 200ms var(--ease), transform 200ms var(--ease);
+  }
+
+  .oss a:hover {
+    border-color: var(--accent-text);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  .oss-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--success);
+  }
+
+  .oss-head strong {
+    font: 600 15px/1.2 var(--font-mono);
+    color: var(--text);
+  }
+
+  .oss-owner {
+    margin-left: auto;
+    font: 500 12px/1 var(--font-mono);
+    color: var(--text-subtle);
+  }
+
+  .oss-what {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .oss-doing {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 900px) {
+    .oss {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .oss {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

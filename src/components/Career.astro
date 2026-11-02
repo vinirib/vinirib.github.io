@@ -1,0 +1,153 @@
+---
+const chapters = [
+  {
+    span: 'now',
+    domain: 'US core banking and Open Banking',
+    summary: 'Integration platform that connects US banks and credit unions to modern apps.',
+    points: [
+      'Connectors for 12+ core banking systems, from Apache Camel to Spring Boot on a shared API contract',
+      'Owner of platform libraries for data management and idempotency',
+      'GitOps deployments and production reliability for about 14 tenants on Kubernetes',
+    ],
+  },
+  {
+    span: 'scale',
+    domain: 'Global payments',
+    summary: 'Subscription payments used by services like Spotify.',
+    points: [
+      'Led 8 engineers on subscription billing',
+      'Encryption for data residency so the product could run in China',
+      'New card options for Mexico raised feature adoption by 35%',
+    ],
+  },
+  {
+    span: 'teach',
+    domain: 'Contract testing at a large bank',
+    summary: 'Made breaking API changes visible before they reached production.',
+    points: [
+      'Pact adoption across about 20 teams in instant payments, loans and transfers',
+      '50+ engineers trained, from proof of concept to rollout',
+      'Re-architected API governance pipelines in Kotlin and TypeScript, 55% faster',
+    ],
+  },
+  {
+    span: 'retail',
+    domain: 'Retail and e-commerce',
+    summary: 'Backends for physical stores and online platforms in the US and the Middle East.',
+    points: ['Kafka, Spring Boot and FastAPI services for product visibility', 'Self-service tools that raised operational efficiency by 40%'],
+  },
+  {
+    span: 'roots',
+    domain: 'Where it started',
+    summary: 'Insurance, card receivables, logistics and prepaid cards.',
+    points: [
+      'Insurance pages from 1 second to 30 ms, support tickets down 75%',
+      'Led a Hyperledger Fabric proof of concept load tested at 800,000 transactions per minute',
+      'Before code: five years in IT infrastructure, which is why I still care about how things run',
+    ],
+  },
+];
+---
+
+<section class="section" id="career" aria-labelledby="career-title">
+  <div class="container">
+    <p class="eyebrow">04 / Career</p>
+    <h2 id="career-title">Ten years, one trace</h2>
+    <p class="lead">Grouped by domain, newest first. The full history lives on LinkedIn.</p>
+    <ol class="trace-line">
+      {chapters.map((c, i) => (
+        <li class={i === 0 ? 'span span-now' : 'span'}>
+          <span class="span-dot" aria-hidden="true"></span>
+          <div class="span-body">
+            <p class="span-label">span:{c.span}</p>
+            <h3>{c.domain}</h3>
+            <p class="span-summary">{c.summary}</p>
+            <ul>
+              {c.points.map((p) => <li>{p}</li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .trace-line {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    margin: 0;
+    padding: 0 0 0 28px;
+    list-style: none;
+  }
+
+  .trace-line::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(var(--accent-text), var(--border-strong) 30%, var(--border));
+  }
+
+  .span {
+    position: relative;
+  }
+
+  .span-dot {
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    background: var(--bg);
+  }
+
+  .span-now .span-dot {
+    border-color: var(--accent-text);
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+
+  .span-label {
+    margin: 0 0 6px;
+    font: 500 12px/1 var(--font-mono);
+    color: var(--text-subtle);
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  .span-summary {
+    margin: 6px 0 10px;
+    color: var(--text-muted);
+  }
+
+  .span ul {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .span ul li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .span ul li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent-text);
+    font-family: var(--font-mono);
+  }
+</style>

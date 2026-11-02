@@ -1,0 +1,64 @@
+---
+import BrandIcon from './BrandIcon.astro';
+import { mailto, site } from '../site';
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <p class="footer-name">{site.name}</p>
+      <p class="footer-note">Currently on call for a tiny human. Response times may vary.</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href={site.linkedin} target="_blank" rel="me noopener"><BrandIcon name="linkedin" /> LinkedIn</a></li>
+      <li><a href={site.github} target="_blank" rel="me noopener"><BrandIcon name="github" /> GitHub</a></li>
+      <li><a href={mailto()}>Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 32px 0 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .footer-name {
+    margin: 0;
+    font: 600 14px/1.4 var(--font-mono);
+  }
+
+  .footer-note {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: var(--text-subtle);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 500 14px/1 var(--font-mono);
+    color: var(--text-muted);
+  }
+
+  .footer-links a:hover {
+    color: var(--text);
+  }
+</style>

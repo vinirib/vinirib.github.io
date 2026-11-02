@@ -1,0 +1,155 @@
+---
+import { Moon, Sun } from 'lucide-preact';
+import BrandIcon from './BrandIcon.astro';
+import { site } from '../site';
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#top" class="wordmark" aria-label="vinirib, back to top">
+      <span class="wordmark-dot" aria-hidden="true"></span>vinirib
+    </a>
+    <nav aria-label="Sections">
+      <a href="#playground">playground</a>
+      <a href="#about">about</a>
+      <a href="#career">career</a>
+      <a href="#work">work with me</a>
+    </nav>
+    <div class="header-tools">
+      <span class="load-badge" id="load-badge" hidden>LOAD: 11</span>
+      <a class="icon-btn" href={site.linkedin} target="_blank" rel="me noopener" aria-label="LinkedIn profile"><BrandIcon name="linkedin" /></a>
+      <a class="icon-btn" href={site.github} target="_blank" rel="me noopener" aria-label="GitHub profile"><BrandIcon name="github" /></a>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle light and dark theme">
+        <span class="theme-icon-dark"><Moon size={16} strokeWidth={1.5} /></span>
+        <span class="theme-icon-light"><Sun size={16} strokeWidth={1.5} /></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  toggle?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {}
+  });
+
+  const badge = document.getElementById('load-badge');
+  window.addEventListener('system:load', (event) => {
+    const level = (event as CustomEvent<{ level: number }>).detail.level;
+    if (badge) badge.hidden = level < 11;
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .header-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 600 16px/1 var(--font-mono);
+    color: var(--text);
+  }
+
+  .wordmark:hover {
+    text-decoration: none;
+  }
+
+  .wordmark-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+
+  nav {
+    display: flex;
+    gap: 20px;
+    margin-left: auto;
+  }
+
+  nav a {
+    font: 500 14px/1 var(--font-mono);
+    color: var(--text-muted);
+  }
+
+  nav a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .header-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .load-badge {
+    font: 600 12px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 150ms var(--ease), color 150ms var(--ease);
+  }
+
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .theme-icon-light {
+    display: none;
+  }
+
+  :global(:root[data-theme='light']) .theme-icon-light {
+    display: inline;
+  }
+
+  :global(:root[data-theme='light']) .theme-icon-dark {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    nav {
+      display: none;
+    }
+
+    .header-tools {
+      margin-left: auto;
+    }
+  }
+</style>

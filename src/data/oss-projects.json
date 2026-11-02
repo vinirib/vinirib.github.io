@@ -1,0 +1,46 @@
+{
+  "josipmusa/idempotency4j": {
+    "what": "Run a unit of work at most once per key and replay the stored result",
+    "doing": "Storage policies, Retry-After handling, Spring Boot wiring"
+  },
+  "transferwise/idempotence4j": {
+    "what": "Wise's library for idempotent actions",
+    "doing": "Spring Web module, payload mismatch detection, Java 21/25 build"
+  },
+  "swagger-api/swagger-parser": {
+    "what": "The OpenAPI parser behind most of the Swagger tooling",
+    "doing": "OpenAPI 3.1 $ref resolution fixes, JDK 21/25 CI"
+  },
+  "swagger-api/swagger-core": {
+    "what": "Generates OpenAPI definitions from Java and Jakarta REST code",
+    "doing": "CDI bean discovery fix for OpenApiServlet"
+  },
+  "floci-io/floci": {
+    "what": "Free, fast local AWS emulator",
+    "doing": "CloudFront custom origin and Cognito CloudFormation MFA fixes"
+  },
+  "IyadhKhalfallah/clauditor": {
+    "what": "Session and quota tool for Claude Code",
+    "doing": "Memory crash fix at session start, CI security audit fix"
+  },
+  "thedotmack/claude-mem": {
+    "what": "Persistent memory for coding agents",
+    "doing": "Folder CLAUDE.md, search date bound and Chroma re-embed fixes"
+  },
+  "OpenAPITools/openapi-generator": {
+    "what": "Generates clients and servers from OpenAPI specs",
+    "doing": "Java/Spring generator fixes"
+  },
+  "opensearch-project/opensearch-java": {
+    "what": "The official Java client for OpenSearch",
+    "doing": "Thread safety fix in JSON deserialization"
+  },
+  "pact-foundation/pact-jvm": {
+    "what": "Consumer-driven contract testing for the JVM",
+    "doing": "Consumer DSL and JSON charset fixes, issue triage"
+  },
+  "quarkusio/quarkus": {
+    "what": "Kubernetes-native Java framework",
+    "doing": "Cleaner Maven settings warnings in the build"
+  }
+}

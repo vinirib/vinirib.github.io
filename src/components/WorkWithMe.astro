@@ -1,0 +1,109 @@
+---
+import { Copy, Mail } from 'lucide-preact';
+import BrandIcon from './BrandIcon.astro';
+import { mailto, site } from '../site';
+
+const offers = [
+  { title: 'Backend and API design', body: 'Services, integrations and contracts that hold up under real traffic.' },
+  { title: 'Reliability reviews', body: 'Retries, idempotency, timeouts and observability, before the incident finds them for you.' },
+  { title: 'Contract testing rollout', body: 'Pact and OpenAPI checks wired into CI, plus training for the teams.' },
+  { title: 'AI-assisted engineering', body: 'Claude Code workflows, context and review agents your team can trust.' },
+];
+---
+
+<section class="section work" id="work" aria-labelledby="work-title">
+  <div class="container">
+    <div class="work-card">
+      <p class="eyebrow">05 / Work with me</p>
+      <h2 id="work-title">Open to B2B contracts, anywhere in the world</h2>
+      <p class="lead">
+        I work remote from São Paulo with teams on several continents. Async friendly, with good overlap with US
+        and EU hours. Tell me what you are building.
+      </p>
+      <ul class="offers">
+        {offers.map((o) => (
+          <li>
+            <strong>{o.title}</strong>
+            <span>{o.body}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="work-ctas">
+        <a class="btn btn-primary" href={mailto()}><Mail size={16} strokeWidth={1.5} /> Start a project</a>
+        <a class="btn" href={site.linkedin} target="_blank" rel="me noopener"><BrandIcon name="linkedin" /> Talk on LinkedIn</a>
+        <button class="btn btn-ghost" type="button" id="copy-email" data-email={site.email}>
+          <Copy size={16} strokeWidth={1.5} /> <span>{site.email}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const button = document.getElementById('copy-email');
+  button?.addEventListener('click', async () => {
+    const label = button.querySelector('span');
+    try {
+      await navigator.clipboard.writeText(button.dataset.email ?? '');
+      if (label) label.textContent = 'copied to clipboard';
+      setTimeout(() => label && (label.textContent = button.dataset.email ?? ''), 1600);
+    } catch {}
+  });
+</script>
+
+<style>
+  .work-card {
+    padding: 40px;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+    border-radius: 18px;
+    background:
+      radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%),
+      var(--surface);
+  }
+
+  .offers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 28px;
+    margin: 0 0 28px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .offers li {
+    display: grid;
+    gap: 4px;
+  }
+
+  .offers strong {
+    font: 600 15px/1.3 var(--font-mono);
+  }
+
+  .offers span {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .work-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .btn-ghost {
+    border-color: transparent;
+    background: transparent;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 700px) {
+    .work-card {
+      padding: 24px;
+    }
+
+    .offers {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

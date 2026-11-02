@@ -1,0 +1,185 @@
+---
+const stats = [
+  { value: '10+', label: 'years shipping backend in production' },
+  { value: '12+', label: 'US banking cores integrated' },
+  { value: '~20', label: 'teams moved to contract testing' },
+  { value: '10+', label: 'PR reviews a day with AI in the loop' },
+];
+
+const pillars = [
+  {
+    tag: 'reliability',
+    title: 'Distributed systems that fail safely',
+    body: 'Retries, idempotency, failover, timeouts and the observability to prove they work. The playground above is the short version of what I do for a living.',
+    proof: [
+      'Wrote an idempotency starter for Spring Boot connectors: contract-driven, Redis-backed, about 96 tests',
+      'Root-caused production OOM kills and tuned JVM memory, probes and autoscaling on Kubernetes',
+    ],
+  },
+  {
+    tag: 'contracts',
+    title: 'APIs other teams can trust',
+    body: 'Contract-first design with OpenAPI, consumer-driven contract tests with Pact, and pipelines that block breaking changes before they ship.',
+    proof: [
+      'Led Pact adoption across about 20 teams in payments, loans and transfers at a large bank, 50+ engineers trained',
+      'Built connectors for 12+ US core banking systems and a YAML-driven contract test framework',
+    ],
+  },
+  {
+    tag: 'ai-native',
+    title: 'AI-assisted engineering, with tests as the judge',
+    body: 'I run Claude Code with versioned context: repository knowledge, architecture patterns and reusable skills. The AI drafts. Tests, contracts and a human review decide what ships.',
+    proof: [
+      'Took PR review capacity from about 2 to 10+ a day with custom review agents',
+      'Built review agents, a Kubernetes troubleshooting agent and versioned notes for 25+ repositories',
+    ],
+  },
+  {
+    tag: 'leadership',
+    title: 'Hands-on tech lead',
+    body: 'I lead by building next to the team: clear contracts, docs people actually read, and onboarding that does not take months.',
+    proof: [
+      'Led 8 engineers on subscription payments at a global payments company',
+      'Cut developer onboarding from 2 months to 2 weeks',
+    ],
+  },
+];
+---
+
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <p class="eyebrow">02 / What I do</p>
+    <h2 id="about-title">A backend generalist who owns the whole path</h2>
+    <p class="lead">
+      From the API contract to the code, the tests, the deploy and the 3 a.m. incident. I pick the language that fits the
+      problem: Java and Kotlin, Go, Python or TypeScript.
+    </p>
+
+    <ul class="stats">
+      {stats.map((s) => (
+        <li>
+          <strong>{s.value}</strong>
+          <span>{s.label}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="pillars">
+      {pillars.map((p) => (
+        <article class="pillar">
+          <p class="pillar-tag">{p.tag}</p>
+          <h3>{p.title}</h3>
+          <p>{p.body}</p>
+          <ul>
+            {p.proof.map((item) => <li>{item}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin: 0 0 32px;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--border);
+  }
+
+  .stats li {
+    display: grid;
+    gap: 6px;
+    padding: 20px;
+    background: var(--surface);
+  }
+
+  .stats strong {
+    font: 600 32px/1 var(--font-mono);
+    color: var(--accent-text);
+  }
+
+  .stats span {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-muted);
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .pillar {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: border-color 200ms var(--ease);
+  }
+
+  .pillar:hover {
+    border-color: var(--border-strong);
+  }
+
+  .pillar-tag {
+    margin: 0 0 10px;
+    font: 500 12px/1 var(--font-mono);
+    color: var(--accent-text);
+  }
+
+  .pillar-tag::before {
+    content: '#';
+    opacity: 0.6;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  .pillar > p:not(.pillar-tag) {
+    margin: 10px 0 14px;
+    color: var(--text-muted);
+  }
+
+  .pillar ul {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 14px 0 0;
+    list-style: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  .pillar li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .pillar li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 860px) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

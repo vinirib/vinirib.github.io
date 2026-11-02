@@ -1,0 +1,220 @@
+---
+import { Picture } from 'astro:assets';
+import avatar from '../assets/avatar.jpg';
+import { Mail } from 'lucide-preact';
+import BrandIcon from './BrandIcon.astro';
+import { mailto, site } from '../site';
+
+const stack = ['Go', 'Java', 'Kotlin', 'Python', 'TypeScript'];
+---
+
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="status" id="status-pill" data-state="operational" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-text">all systems operational</span>
+      </p>
+      <h1>I build backend systems that keep working when things break.</h1>
+      <p class="sub">
+        {site.title} in São Paulo, working remote with teams across the globe. Distributed systems, APIs and
+        AI-assisted engineering.
+      </p>
+      <ul class="stack" aria-label="Languages I work with">
+        {stack.map((item) => <li class="chip">{item}</li>)}
+      </ul>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#playground">Break my system ↓</a>
+        <a class="btn" href={mailto()}>Start a project</a>
+      </div>
+      <p class="availability"><span aria-hidden="true">◆</span> Open to B2B contracts worldwide</p>
+      <ul class="links" aria-label="Find me">
+        <li><a href={site.linkedin} rel="me noopener" target="_blank"><BrandIcon name="linkedin" /> LinkedIn</a></li>
+        <li><a href={site.github} rel="me noopener" target="_blank"><BrandIcon name="github" /> GitHub</a></li>
+        <li><a href={mailto()}><Mail size={16} strokeWidth={1.5} /> {site.email}</a></li>
+      </ul>
+    </div>
+    <div class="hero-avatar">
+      <Picture
+        src={avatar}
+        alt="Vinícius Ribeiro in a black t-shirt, smiling, in an office with an architecture diagram on a whiteboard"
+        widths={[400, 600]}
+        sizes="200px"
+        quality={90}
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  </div>
+</section>
+
+<script>
+  const pill = document.getElementById('status-pill');
+  const text = pill?.querySelector('.status-text');
+  window.addEventListener('system:status', (event) => {
+    const degraded = (event as CustomEvent<{ degraded: boolean }>).detail.degraded;
+    if (!pill || !text) return;
+    pill.dataset.state = degraded ? 'degraded' : 'operational';
+    text.textContent = degraded ? 'degraded performance · someone is breaking things' : 'all systems operational';
+  });
+</script>
+
+<style>
+  .hero {
+    min-height: min(80vh, 760px);
+    display: flex;
+    align-items: center;
+    padding: 72px 0 48px;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center top;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 48px;
+    align-items: start;
+    width: 100%;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 28px;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    font: 500 13px/1 var(--font-mono);
+    color: var(--text-muted);
+    transition: border-color 250ms var(--ease), color 250ms var(--ease);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: breathe 2s ease-in-out infinite;
+  }
+
+  .status[data-state='degraded'] {
+    border-color: color-mix(in srgb, var(--warning) 45%, transparent);
+    color: var(--warning);
+  }
+
+  .status[data-state='degraded'] .status-dot {
+    background: var(--warning);
+    animation-duration: 0.7s;
+  }
+
+  @keyframes breathe {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  h1 {
+    font-size: clamp(32px, 4.6vw, 48px);
+    max-width: 18ch;
+  }
+
+  .sub {
+    margin: 20px 0 0;
+    max-width: 56ch;
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .availability {
+    margin: 18px 0 0;
+    font: 500 13px/1.4 var(--font-mono);
+    color: var(--success);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+    font: 500 14px/1 var(--font-mono);
+    color: var(--text-muted);
+  }
+
+  .links a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .hero-avatar :global(img) {
+    display: block;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid var(--border-strong);
+    transition: border-color 200ms var(--ease);
+  }
+
+  .hero-avatar :global(img):hover {
+    border-color: var(--accent-text);
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      min-height: auto;
+      padding: 40px 0 32px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .hero-avatar {
+      order: -1;
+      margin-bottom: 24px;
+    }
+
+    .hero-avatar :global(img) {
+      width: 96px;
+      height: 96px;
+      border-radius: 14px;
+    }
+
+    .sub {
+      font-size: 16px;
+    }
+  }
+</style>
